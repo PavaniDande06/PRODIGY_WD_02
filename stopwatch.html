@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stopwatch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    #stopwatch {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Stopwatch</h1>
+  <div id="stopwatch">00:00:00</div>
+  <button id="start">Start</button>
+  <button id="stop">Stop</button>
+  <button id="reset">Reset</button>
+
+  <script>
+    let startTime, interval, isRunning = false;
+
+    function updateStopwatch() {
+      const currentTime = new Date().getTime() - startTime;
+      const hours = Math.floor(currentTime / (1000 * 60 * 60));
+      const minutes = Math.floor((currentTime % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((currentTime % (1000 * 60)) / 1000);
+      document.getElementById('stopwatch').textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    document.getElementById('start').addEventListener('click', () => {
+      if (!isRunning) {
+        startTime = new Date().getTime();
+        interval = setInterval(updateStopwatch, 1000);
+        isRunning = true;
+      }
+    });
+
+    document.getElementById('stop').addEventListener('click', () => {
+      if (isRunning) {
+        clearInterval(interval);
+        isRunning = false;
+      }
+    });
+
+    document.getElementById('reset').addEventListener('click', () => {
+      clearInterval(interval);
+      document.getElementById('stopwatch').textContent = '00:00:00';
+      isRunning = false;
+    });
+  </script>
+</body>
+</html>
